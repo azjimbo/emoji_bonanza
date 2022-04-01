@@ -1,0 +1,488 @@
+<form theme="light" hideFilters="true">
+  <label>emoji bonanza</label>
+  <!--- 
+ Welcome to the emoji bonanza.  A friend figured out how to get emoji in a dashboard, and I built this to see what was available.
+ There are many more available; I'll add them as time permits.  
+ 
+ Punch list:  find more character sets and make it easier to get to the selection options. 
+
+If you need a touch of humor, poop is 128169.  It always makes me chuckle.
+
+James Callahan www.professionalparanoid.com  1 Nov 2020 (waiting for the election during the pandemic, I needed a disctration).
+
+-->
+  <!--  
+  this row to debug and see how tokens are being set 
+  <row>
+    <panel>
+      <html>unicode: $unicode$  pass: $pass$ count: $count$ base: $base$ setter: $setter$</html>
+    </panel>
+  </row> 
+ -->
+  <fieldset submitButton="false">
+   <input type="checkbox" token="MoaT"  searchWhenChanged="true">
+     <label> </label>
+           <choice value="Moat">Select Different Unicode Sets</choice>
+   </input>
+ </fieldset>
+
+<row><panel>
+   <html>
+     <details>
+       <summary>Using Unicode Characters in Splunk Dashboards</summary>
+       <details>
+         <summary>What is this?</summary>
+         This is a way to review how different Unicode Character will present in a dashboard.<br/>  
+         It also provides the Splunk eval statement necessary to add it to your query.<br/>
+       </details>
+       <details>
+         <summary>Selecting different character sets</summary>
+         Use the <font color="blue"><b>'Show Filters'</b></font> option above then select the check box.  Some of the other character sets available will present in a row below. These are grouped according to a list  found <a href="https://www.vertex42.com/ExcelTips/unicode-symbols.html" target="blank">here.</a> <br/>
+         The official repository for unicode is <a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank">here</a>.<br/>
+         One thing I noticed is that some icons that would fit in one category appear in others (musical notes for example), So, if you're looking for something specific, you may have to dig a bit.<br/>
+        </details>
+         <details>
+           <summary>How to use this</summary>         
+         <p>If you see a character you might want to use, click on it in the table and it will present in the sample panels with both light and dark theme background colors.</p>
+         Eventually, the goal is to figure out how to label these with names, but that will involve a lookup table, and right now this is just a single dashboard and not a full app.<br/>
+         Here's a sample of how you can use this:<a href="
+        /app/search/search?q=%7Cmakeresults%20count%3D1%0A%7Ceval%20weather%3D(%22rain%22)%0A%7Ceval%20show%3Dcase(weather%3D%22rain%22%2Cprintf(%22%25c%22%2C%20127782)%2C%20weather%3D%22clouds%22%2C%20printf(%22%25c%22%2C%20127781)%2C%20weather%3D%22snow%22%2Cprintf(%22%25c%22%2C%20128169)%2C1%3D1%2Cprintf(%22%25c%22%2C%20127774))%0A%7Ctable%20show&amp;display.page.search.mode=verbose&amp;dispatch.sample_ratio=1&amp;workload_pool=&amp;earliest=-24h%40h&amp;latest=now&amp;display.page.search.tab=visualizations&amp;display.general.type=visualizations&amp;display.visualizations.type=singlevalue&amp;display.visualizations.singlevalueHeight=214" target="_blank"> <b>Sample.</b> </a>  When this opens in a new tab, adjust the 'weather' to one of the options (rain/clouds/snow) or to anything else to see the results.  This should present as a single value visualization, but you can put these in any panel.  
+       </details>
+    </details>
+   </html>
+ </panel></row>
+ 
+ 
+<row depends="$MoaT$"><panel>
+
+    <input type="checkbox" token="emoji" searchWhenChanged="true">
+      <label></label>
+      <choice value="emoji">Emoji</choice>
+    </input>
+    <input type="checkbox" token="char" searchWhenChanged="true">
+      <label> </label>
+      <choice value="char">Characters</choice>
+    </input>
+    <input type="checkbox" token="game" searchWhenChanged="true">
+       <label> </label>
+      <choice value="game">Music/Games</choice>
+    </input>
+    <input type="checkbox" token="misc" searchWhenChanged="true">
+       <label> </label>
+      <choice value="misc">Miscellaneous</choice>
+    </input>    
+    <input type="checkbox" token="graphic" searchWhenChanged="true">
+       <label> </label>
+      <choice value="graphics">Graphics</choice>
+    </input>
+    <input type="checkbox" token="arrow" searchWhenChanged="true">
+       <label> </label>
+      <choice value="arrow">Arrows</choice>
+    </input>
+    <input type="checkbox" token="math" searchWhenChanged="true">
+       <label> </label>
+      <choice value="math">Math</choice>
+    </input>
+</panel>
+<panel>
+
+<!-- unique boxes -->
+      <input type="radio" token="checkbox" depends="$emoji$">
+      <label>Emoji &amp; Pictrographs</label>
+      <choice value="checkbox27">Emoticons</choice>
+      <choice value="checkbox20">Misc Symbols</choice>
+      <choice value="checkbox21">Dingbats</choice>
+      <choice value="checkbox28">Pictographs</choice>
+      <choice value="checkbox29">More Pictrographs</choice>
+
+      <default>checkbox28</default>
+     <change>
+        <condition value="checkbox20">
+          <set token="unicode">9728</set>
+          <set token="count">256</set>
+          <set token="base">9727</set>
+        </condition>
+        <condition value="checkbox21">
+          <set token="unicode">9984</set>
+          <set token="count">192</set>
+          <set token="base">9983</set>
+        </condition>
+        <condition value="checkbox27">
+          <set token="unicode">128521</set>
+          <set token="count">71</set>
+          <set token="base">128520</set>
+        </condition>
+        <condition value="checkbox28">
+          <set token="unicode">127790</set>
+          <set token="count">768</set>
+          <set token="base">127743</set>
+        </condition>
+        <condition value="checkbox29">
+          <set token="unicode">129305</set>
+          <set token="count">252</set>
+          <set token="base">129279</set>
+        </condition>
+      </change>
+     </input>
+     <input type="radio" token="checkbox" depends="$misc$">
+      <label>Misc</label>
+      <default>checkbox17</default>
+      <choice value="checkbox15">Misc-Tech</choice>
+      <choice value="checkbox30">Transport and Map</choice>    
+      <choice value="checkbox31">	Control Pictures</choice>   
+      <change>
+        <condition value="checkbox15">
+          <set token="unicode">9009</set>
+          <set token="count">256</set>
+          <set token="base">8959</set>
+        </condition>
+        <condition value="checkbox30">
+          <set token="unicode">128640</set>
+          <set token="count">128</set>
+          <set token="base">128639</set>
+        </condition>
+        <condition value="checkbox31">
+          <set token="unicode">9249</set>
+          <set token="count">96</set>
+          <set token="base">9216</set>
+        </condition>
+        
+  
+        
+      </change>
+    </input>
+    <input type="radio" token="checkbox" depends="$game$">
+      <label>Music &amp; Games</label>
+      <default>checkbox2</default>
+      <choice value="checkbox24">Music</choice>
+      <choice value="checkbox25">Dominos</choice>
+      <choice value="checkbox26">Cards</choice>
+      <change>
+        <condition value="checkbox24">
+          <set token="unicode">119070</set>
+          <set token="count">256</set>
+          <set token="base">119039</set>
+        </condition>
+        <condition value="checkbox25">
+          <set token="unicode">127098</set>
+          <set token="count">112</set>
+          <set token="base">127023</set>
+        </condition>
+        <condition value="checkbox26">
+          <set token="unicode">127137</set>
+          <set token="count">96</set>
+          <set token="base">127135</set>
+        </condition>
+      </change>
+    </input>
+    <input id="radiochar" type="radio" token="checkbox" depends="$char$">
+      <label>Character Set</label>
+      <default>checkbox2</default>
+      <choice value="checkbox1">Standard Character Set</choice>
+      <choice value="checkbox2">General Punctuation</choice>
+      <choice value="checkbox3">Super and subscripts</choice>
+      <choice value="checkbox16">Enclosed Characters</choice>      
+      <choice value="checkbox4">Currency</choice>
+      <choice value="checkbox5">Letterlike</choice>
+      <choice value="checkbox6">Greek</choice>
+      <choice value="checkbox22">Braille</choice>      
+      <change>
+        <condition value="checkbox1">
+          <set token="unicode">74</set>
+          <set token="count">256</set>
+          <set token="base">-1</set>
+        </condition>
+        <condition value="checkbox2">
+          <set token="unicode">8253</set>
+          <set token="count">95</set>
+          <set token="base">8191</set>
+        </condition>
+        <condition value="checkbox3">
+          <set token="unicode">8304</set>
+          <set token="count">48</set>
+          <set token="base">8303</set>
+        </condition>
+        <condition value="checkbox4">
+          <set token="unicode">8364</set>
+          <set token="count">48</set>
+          <set token="base">8351</set>
+        </condition>
+        <condition value="checkbox5">
+          <set token="unicode">8478</set>
+          <set token="count">80</set>
+          <set token="base">8447</set>
+        </condition>
+        <condition value="checkbox16">
+          <set token="unicode">9312</set>
+          <set token="count">160</set>
+          <set token="base">9311</set>
+        </condition>        
+        <condition value="checkbox6">
+          <set token="unicode">937</set>
+          <set token="count">57</set>
+          <set token="base">912</set>
+        </condition>  
+        <condition value="checkbox22">
+          <set token="unicode">10269</set>
+          <set token="count">256</set>
+          <set token="base">10239</set>
+        </condition>
+      </change>
+    </input>
+    <input type="radio" token="checkbox" depends="$graphic$">
+      <label>Graphics</label>
+      <default>checkbox18</default>    
+      <choice value="checkbox17">Box Drawing</choice>
+      <choice value="checkbox18">Block Elements</choice>
+      <choice value="checkbox19">More Geometric Shapes</choice>
+      <change>
+        <condition value="checkbox17">
+          <set token="unicode">9568</set>
+          <set token="count">128</set>
+          <set token="base">9471</set>
+        </condition>
+        <condition value="checkbox18">
+          <set token="unicode">9600</set>
+          <set token="count">32</set>
+          <set token="base">9599</set>
+        </condition>
+        <condition value="checkbox19">
+          <set token="unicode">128896</set>
+          <set token="count">128</set>
+          <set token="base">128895</set>
+        </condition>
+        </change>
+    </input>
+    <input type="radio" token="checkbox" depends="$arrow$">
+      <label>Arrows</label>
+      <default>checkbox8</default>    
+      <choice value="checkbox8">Arrows</choice>
+      <choice value="checkbox9">More Arrows A</choice>
+      <choice value="checkbox10">More Arrows C</choice>
+      <choice value="checkbox11">More Arrows A</choice>
+      <choice value="checkbox23">More Misc Symb and Arrows</choice>      
+      <change>
+        <condition value="checkbox8">
+          <set token="unicode">8592</set>
+          <set token="count">112</set>
+          <set token="base">8591</set>
+        </condition>
+        <condition value="checkbox9">
+          <set token="unicode">10224</set>
+          <set token="count">15</set>
+          <set token="base">10223</set>
+        </condition>
+        <condition value="checkbox10">
+          <set token="unicode">10496</set>
+          <set token="count">132</set>
+          <set token="base">10495</set>
+        </condition>
+        <condition value="checkbox11">
+          <set token="unicode">129024</set>
+          <set token="count">706</set>
+          <set token="base">129023</set>
+        </condition>
+        <condition value="checkbox23">
+          <set token="unicode">11008</set>
+          <set token="count">256</set>
+          <set token="base">11007</set>
+        </condition>        
+        </change>
+    </input>
+    <input  type="radio" token="checkbox" depends="$math$">
+      <label>Math</label>
+      <default>checkbox12</default>
+      <choice value="checkbox12">Math</choice>
+      <choice value="checkbox13">more Math A</choice>
+      <choice value="checkbox14">more Math B</choice> 
+      <choice value="checkbox7">Number forms</choice>
+      <change>
+        <condition value="checkbox12">
+          <set token="unicode">8734</set>
+          <set token="count">256</set>
+          <set token="base">8703</set>
+        </condition>
+        <condition value="checkbox13">
+          <set token="unicode">10624</set>
+          <set token="count">128</set>
+          <set token="base">10623</set>
+        </condition>
+        <condition value="checkbox14">
+          <set token="unicode">10752</set>
+          <set token="count">256</set>
+          <set token="base">10751</set>
+        </condition>
+        <condition value="checkbox7">
+          <set token="unicode">8555</set>
+          <set token="count">64</set>
+          <set token="base">8527</set>
+        </condition>        
+      </change>    
+    </input>
+  </panel>
+</row>
+
+  <row depends="$hide$">
+    <panel>
+      <html>
+        <style>
+          #radiosample div[data-test="radio-list"]{
+           display: inline;
+          }  
+
+          #radiosample div[data-test="option"]{
+            display: inline;
+            margin-top: 0px;
+            margin-right: 10px;
+            margin-bottom: 0px;
+            margin-left: 0px
+          } 
+          #radiosample {
+            width:100%;
+          }
+        </style>
+        <style>
+          table tbody tr td{
+            font-size:125% !important;
+          }
+        </style>
+        
+      </html>
+    </panel>
+  </row>
+  
+<!-- Show this stuff -->  
+  
+  <row>
+    <panel>
+      <title>Light Theme for $unicode$</title>
+      <single>
+        <search>
+          <query>|makeresults count=1
+|eval emoji=printf("%c", $unicode$)
+|table emoji</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">all</option>
+        <option name="height">358</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051", "0x0877a6", "0xf8be34", "0xf1813f", "0xdc4e41"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Dark Theme for $unicode$</title>
+      <single>
+        <search>
+          <query>|makeresults count=1
+|eval emoji=printf("%c", $unicode$)
+|table emoji</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">none</option>
+        <option name="height">358</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xdc4e41"]</option>
+        <option name="rangeValues">[10000000]</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <html>
+       
+       <div style="text-align: center;">
+          <br/>
+        <font size="+1">Code for your dashboard:</font><p>
+            <br/>
+            <br/>
+        <font size="+3" color="blue">|eval emoji=printf("%c", $unicode$)</font>
+          </p>
+        <br/>
+          <br/>
+        Copy and paste into your query and rename 'emoji' to your field name.
+        <p><a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blanl">Full emoji list from unicode.org</a></p>
+      </div>
+    </html>
+  </panel>
+</row>
+  <row depends="$nevershow$">
+    <panel>
+      <table>
+        <search>
+          <query>
+    |makeresults count=1
+|eval passmeplease=("$pass$")
+|rex field=passmeplease "\S\s+(?&lt;unicode&gt;\d+)"
+    
+  </query>
+          <done>
+            <set token="unicode">$result.unicode$</set>
+          </done>
+        </search>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>
+|makeresults count=$count$
+|eval base = tonumber("1F380",16) |eval base = $base$
+|streamstats count
+|eval unicode_value = base + count
+|sort unicode_value
+|eval emoji=printf("%c", unicode_value) 
+|eval chartme=(emoji+"    "+unicode_value)
+|eval sets = count % 6
+|eval fields_{sets} = chartme
+|stats values(fields_*) as fields_* 
+|rename  fields_1 as "fields ", fields_2 as "fields  ", fields_3 as "fields   ", fields_4 as "fields    ", fields_5 as "fields     ",  fields_0 as "fields"
+|table    "fields ","fields  ","fields   ","fields    ","fields     ", "fields" 
+          </query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <fields>"fields ","fields  ","fields   ","fields    ","fields     ", "fields"</fields>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <drilldown>
+          <set token="pass">$click.value2$</set>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>
